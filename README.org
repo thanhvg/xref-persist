@@ -1,0 +1,74 @@
+#+TITLE: xref-persist
+#+OPTIONS: toc:nil num:nil
+
+Save the results of an =xref= search (references, definitions, grep
+matches, LSP lookups, ...) and reopen them later as a normal,
+interactive xref buffer -- across Emacs sessions, or inline in an
+Org file.
+
+* Why
+
+=xref.el= results normally die with the =*xref*= buffer. This
+package lets you keep them.
+
+* Packages
+
+- =xref-persist= :: core package. Save/load =.xref= files.
+- =ob-xref= :: optional. Org Babel integration, built on
+  =xref-persist='s public API.
+
+* Installation
+
+From MELPA:
+
+#+begin_src emacs-lisp
+(use-package xref-persist)
+(use-package ob-xref)   ;; optional, only if you use Org
+#+end_src
+
+Or manually: put both files on your =load-path= and
+=(require 'xref-persist)= / =(require 'ob-xref)=.
+
+* Usage
+
+** Save/reload as a =.xref= file
+
+#+begin_src text
+M-x xref-find-references RET         ; or project-find-regexp, eglot, etc.
+M-x xref-persist-save RET foo.xref RET
+
+;; later, even in a new Emacs session:
+C-x C-f foo.xref RET                 ; opens as a live xref buffer
+#+end_src
+
+=.xref= files open via =xref-persist-mode=: same keybindings as a
+normal xref buffer (=RET=, ~n~/~p~, ~g~ to revert from disk, ...),
+and the buffer is named after the file instead of =*xref*=.
+
+** Save/reload inline in Org (requires =ob-xref=)
+
+#+begin_src text
+M-x xref-persist-copy-as-org-block   ; from a live xref buffer
+;; yank into your notes:
+#+end_src
+
+#+begin_src org
+,#+begin_src xref :results none
+((:summary "..." :file "..." :line 10 :column 0) ...)
+,#+end_src
+#+end_src
+
+Put point in the block and press =C-c C-c= any time later to reopen
+it as an interactive xref buffer.
+
+* Caveat
+
+Only xref items backed by a file/line/column location round-trip --
+this covers grep, ripgrep, ~project-find-regexp~, and most LSP/eglot
+"find references" backends. Backends using other location types
+(e.g. Emacs Lisp's own =M-.= backend) save with a nil position and
+won't jump correctly on reload.
+
+* License
+
+GPL-3.0-or-later. See [[file:LICENSE][LICENSE]].
