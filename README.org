@@ -19,14 +19,14 @@ package lets you keep them.
 
 * Installation
 
-From MELPA:
+** From MELPA (not yet, TBD):
 
 #+begin_src emacs-lisp
 (use-package xref-persist)
 (use-package ob-xref)   ;; optional, only if you use Org
 #+end_src
 
-Or manually: put both files on your =load-path= and
+** Manually: put both files on your =load-path= and
 =(require 'xref-persist)= / =(require 'ob-xref)=.
 
 * Usage
@@ -69,6 +69,3 @@ this covers grep, ripgrep, ~project-find-regexp~, and most LSP/eglot
 (e.g. Emacs Lisp's own =M-.= backend) save with a nil position and
 won't jump correctly on reload.
 
-* License
-
-GPL-3.0-or-later. See [[file:LICENSE][LICENSE]].
