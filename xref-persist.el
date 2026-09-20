@@ -101,7 +101,7 @@ column) round-trip meaningfully; others get nil position data.
 This is part of the public API other packages (such as
 `ob-xref.el') can build on."
   (let ((loc (xref-item-location item)))
-    (list :summary (xref-item-summary item)
+    (list :summary (substring-no-properties (xref-item-summary item))
           :file   (and (xref-file-location-p loc) (xref-file-location-file loc))
           :line   (and (xref-file-location-p loc) (xref-file-location-line loc))
           :column (and (xref-file-location-p loc) (xref-file-location-column loc)))))
